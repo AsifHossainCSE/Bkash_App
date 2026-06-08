@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:bkash_app/features/home/presentation/screens/home_screen.dart';
 
-class OtpScreen extends StatelessWidget {
+class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key});
+
+  @override
+  State<OtpScreen> createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
+  final TextEditingController otpController =
+      TextEditingController();
+
+  @override
+  void dispose() {
+    otpController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,13 +24,10 @@ class OtpScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Verify OTP"),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(24),
-
         child: Column(
           children: [
-
             const SizedBox(height: 40),
 
             const Text(
@@ -29,6 +41,7 @@ class OtpScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             TextField(
+              controller: otpController,
               keyboardType: TextInputType.number,
               maxLength: 6,
               decoration: const InputDecoration(
@@ -43,10 +56,28 @@ class OtpScreen extends StatelessWidget {
               width: double.infinity,
               height: 55,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (otpController.text == "123456") {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const HomeScreen(),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text("Invalid OTP"),
+                      ),
+                    );
+                  }
+                },
                 child: const Text("Verify"),
               ),
-            )
+            ),
           ],
         ),
       ),

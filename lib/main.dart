@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
-import 'features/main/presentation/screens/main_nav_screen.dart';
+import 'package:provider/provider.dart';
+
+import 'providers/user_provider.dart';
+import 'core/routes/app_pages.dart';
+import 'core/routes/app_routes.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -10,9 +23,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainNavScreen(),
+      initialRoute: AppRoutes.splash,
+      onGenerateRoute: AppPages.generateRoute,
     );
   }
 }
